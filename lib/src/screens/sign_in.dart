@@ -12,6 +12,20 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SignInParent(),
+    );
+  }
+}
+
+class SignInParent extends StatefulWidget {
+  @override
+  _SignInParentState createState() => _SignInParentState();
+}
+
+class _SignInParentState extends State<SignInParent> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   RxCommandListener _signInListener;
@@ -78,83 +92,77 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPopScope,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 48),
-                alignment: AlignmentDirectional.center,
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 48,
-                  ),
-                  textAlign: TextAlign.center,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 48),
+              alignment: AlignmentDirectional.center,
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 48,
                 ),
+                textAlign: TextAlign.center,
               ),
-              Divider(
-                height: 32,
-              ),
-              Container(
-                child: Form(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      StreamBuilder<String>(
-                        stream: sl<AuthManager>().email,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          return TextField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                                labelText: 'Email', errorText: snapshot.error),
-                            onChanged: sl<AuthManager>().onEmailChanged,
-                            keyboardType: TextInputType.emailAddress,
-                          );
-                        },
-                      ),
-                      StreamBuilder<String>(
-                        stream: sl<AuthManager>().password,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          return TextField(
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                                labelText: 'Password',
-                                errorText: snapshot.error),
-                            onChanged: sl<AuthManager>().onPasswordChanged,
-                            obscureText: true,
-                          );
-                        },
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 40),
-                        child: SizedBox(
-                          width: double.maxFinite,
-                          height: 50,
-                          child: FlatButton(
-                            color: Colors.grey,
-                            child: Text('Sign In'),
-                            onPressed: () {
-                              final credentials = new Map();
-                              credentials['email'] = _emailController.text;
-                              credentials['password'] =
-                                  _passwordController.text;
+            ),
+            Divider(
+              height: 32,
+            ),
+            Container(
+              child: Form(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    StreamBuilder<String>(
+                      stream: sl<AuthManager>().email,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return TextField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                              labelText: 'Email', errorText: snapshot.error),
+                          onChanged: sl<AuthManager>().onEmailChanged,
+                          keyboardType: TextInputType.emailAddress,
+                        );
+                      },
+                    ),
+                    StreamBuilder<String>(
+                      stream: sl<AuthManager>().password,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return TextField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                              labelText: 'Password', errorText: snapshot.error),
+                          onChanged: sl<AuthManager>().onPasswordChanged,
+                          obscureText: true,
+                        );
+                      },
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 40),
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        height: 50,
+                        child: FlatButton(
+                          color: Colors.grey,
+                          child: Text('Sign In'),
+                          onPressed: () {
+                            final credentials = new Map();
+                            credentials['email'] = _emailController.text;
+                            credentials['password'] = _passwordController.text;
 
-                              sl<AuthManager>().signInUser(credentials);
-                            },
-                          ),
+                            sl<AuthManager>().signInUser(credentials);
+                          },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

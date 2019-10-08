@@ -11,7 +11,7 @@ import 'package:afyamkononi/src/utils/validators/password_validator.dart';
 
 abstract class AuthManager {
   RxCommand<AuthStatus, AuthStatus> authStatus;
-  RxCommand<Map, bool> signInUser;
+  RxCommand<Map, SignInResult> signInUser;
   RxCommand<void, bool> signOutUser;
   RxCommand<void, bool> fetchSavedCredentials;
 
@@ -28,7 +28,7 @@ class AuthManagerInstance
   RxCommand<AuthStatus, AuthStatus> authStatus;
 
   @override
-  RxCommand<Map, bool> signInUser;
+  RxCommand<Map, SignInResult> signInUser;
 
   @override
   RxCommand<void, bool> fetchSavedCredentials;
@@ -40,7 +40,7 @@ class AuthManagerInstance
     authStatus = RxCommand.createSync<AuthStatus, AuthStatus>(
         (authStatus) => authStatus);
 
-    signInUser = RxCommand.createAsync<Map, bool>(sl<APIService>().signInUser);
+    signInUser = RxCommand.createAsync<Map, SignInResult>(sl<APIService>().signInUser);
 
     // Return authentication status which can be used as the last result
     // to perform auth checks as opposed to making the API calls again
