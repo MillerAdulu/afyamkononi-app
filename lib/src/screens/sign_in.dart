@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rx_command/rx_command_listener.dart';
+import 'package:rx_command/rx_command.dart';
 
 import 'package:afyamkononi/src/models/auth.dart';
 import 'package:afyamkononi/src/screens/home.dart';
@@ -92,78 +92,102 @@ class _SignInParentState extends State<SignInParent> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPopScope,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 48),
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 48,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Divider(
-              height: 32,
-            ),
-            Container(
-              child: Form(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    StreamBuilder<String>(
-                      stream: sl<AuthManager>().email,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        return TextField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              labelText: 'Email', errorText: snapshot.error),
-                          onChanged: sl<AuthManager>().onEmailChanged,
-                          keyboardType: TextInputType.emailAddress,
-                        );
-                      },
-                    ),
-                    StreamBuilder<String>(
-                      stream: sl<AuthManager>().password,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        return TextField(
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                              labelText: 'Password', errorText: snapshot.error),
-                          onChanged: sl<AuthManager>().onPasswordChanged,
-                          obscureText: true,
-                        );
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 40),
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        height: 50,
-                        child: FlatButton(
-                          color: Colors.grey,
-                          child: Text('Sign In'),
-                          onPressed: () {
-                            final credentials = new Map();
-                            credentials['email'] = _emailController.text;
-                            credentials['password'] = _passwordController.text;
+      child: StreamBuilder<CommandResult<SignInResult>>(
+          stream: sl<AuthManager>().signInUser.results,
+          builder: (context, snapshot) {
+            final result = snapshot.data;
 
-                            sl<AuthManager>().signInUser(credentials);
-                          },
+            if (result != null) {
+              if (result.isExecuting)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              if (result.hasError) return buildPage();
+            }
+
+            return buildPage();
+          }),
+    );
+  }
+
+  Widget buildPage() {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 48),
+            alignment: AlignmentDirectional.center,
+            child: Text(
+              'Login',
+              style: TextStyle(
+                fontSize: 48,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Divider(
+            height: 32,
+          ),
+          Container(
+            child: Form(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  StreamBuilder<String>(
+                    stream: sl<AuthManager>().email,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            labelText: 'Email', errorText: snapshot.error),
+                        onChanged: sl<AuthManager>().onEmailChanged,
+                        keyboardType: TextInputType.emailAddress,
+                      );
+                    },
+                  ),
+                  StreamBuilder<String>(
+                    stream: sl<AuthManager>().password,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                            labelText: 'Password', errorText: snapshot.error),
+                        onChanged: sl<AuthManager>().onPasswordChanged,
+                        obscureText: true,
+                      );
+                    },
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 40),
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      height: 50,
+                      child: FlatButton(
+                        color: Colors.blue,
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
+                        onPressed: () {
+                          final credentials = new Map();
+                          credentials['email'] = _emailController.text;
+                          credentials['password'] = _passwordController.text;
+
+                          sl<AuthManager>().signInUser(credentials);
+                        },
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

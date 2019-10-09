@@ -40,7 +40,8 @@ class AuthManagerInstance
     authStatus = RxCommand.createSync<AuthStatus, AuthStatus>(
         (authStatus) => authStatus);
 
-    signInUser = RxCommand.createAsync<Map, SignInResult>(sl<APIService>().signInUser);
+    signInUser =
+        RxCommand.createAsync<Map, SignInResult>(sl<APIService>().signInUser);
 
     // Return authentication status which can be used as the last result
     // to perform auth checks as opposed to making the API calls again
