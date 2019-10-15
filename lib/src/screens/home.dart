@@ -5,6 +5,10 @@ import 'package:afyamkononi/src/screens/decision.dart';
 import 'package:afyamkononi/src/state/managers/auth_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
 
+import 'package:afyamkononi/src/screens/tabs/permissions.dart';
+import 'package:afyamkononi/src/screens/tabs/profile.dart';
+import 'package:afyamkononi/src/screens/tabs/transactions.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -26,6 +30,13 @@ class HomeParent extends StatefulWidget {
 
 class _HomeParentState extends State<HomeParent> {
   RxCommandListener _userLogout;
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    PatientProfile(),
+    PatientPermissions(),
+    PatientTransactions()
+  ];
 
   @override
   void initState() {
@@ -82,12 +93,30 @@ class _HomeParentState extends State<HomeParent> {
   }
 
   Widget _buildPage() {
-    return Center(
-      child: FlatButton(
-        child: Text('Sign Out'),
-        onPressed: signOut,
+    return Scaffold(
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: <BottomNavigationBarItem>[
+          // Patient Profile Tab
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), title: Text('My Profile')),
+          // Confidential Records Permissions
+          BottomNavigationBarItem(
+              icon: Icon(Icons.edit), title: Text('Permissions')),
+          // Transactions List
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list), title: Text('My Transactions'))
+        ],
       ),
     );
+  }
+
+  void onTabTapped(int _index) {
+    setState(() {
+      _currentIndex = _index;
+    });
   }
 
   void signOut() async {
