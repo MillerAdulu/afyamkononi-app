@@ -5,6 +5,7 @@ abstract class SharedPreferencesService {
   Future<String> getGovId();
   Future<String> getName();
   Future<String> getAccessToken();
+  Future<void> clearSharedPrefs();
 }
 
 class SharedPreferencesInstance implements SharedPreferencesService {
@@ -30,5 +31,11 @@ class SharedPreferencesInstance implements SharedPreferencesService {
   Future<String> getAccessToken() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     return _prefs.getString('accessToken');
+  }
+
+  @override
+  Future<void> clearSharedPrefs() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.clear();
   }
 }
