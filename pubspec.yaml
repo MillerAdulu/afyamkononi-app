@@ -29,6 +29,8 @@ dependencies:
   moor_flutter:
   path:
   built_value:
+  shared_preferences:
+  jaguar_jwt:
 
 dev_dependencies:
   flutter_test:

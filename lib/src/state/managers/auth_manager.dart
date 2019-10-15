@@ -1,7 +1,7 @@
-import 'dart:math';
-
+import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:rx_command/rx_command.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:afyamkononi/src/models/auth.dart';
 import 'package:afyamkononi/src/state/services/api_service.dart';
@@ -14,6 +14,7 @@ abstract class AuthManager {
   RxCommand<Map, SignInResult> signInUser;
   RxCommand<void, bool> signOutUser;
   RxCommand<void, bool> fetchSavedCredentials;
+  RxCommand<SignInResult, void> saveCredentials;
 
   Function(String) get onEmailChanged;
   Stream<String> get email;
@@ -34,6 +35,9 @@ class AuthManagerInstance
   RxCommand<void, bool> fetchSavedCredentials;
 
   @override
+  RxCommand<SignInResult, void> saveCredentials;
+
+  @override
   RxCommand<void, bool> signOutUser;
 
   AuthManagerInstance() {
@@ -49,14 +53,28 @@ class AuthManagerInstance
         .where((authResult) => authResult.data != null)
         .listen((authResult) {
       print("My ${authResult.data} is saved to local storage or database");
+      saveCredentials(authResult.data);
       authStatus(AuthStatus.LOGGED_IN);
     });
 
+    saveCredentials =
+        RxCommand.createAsyncNoResult<SignInResult>((signInResult) async {
+      final accessToken = signInResult.accessToken;
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      await _prefs.setString('accessToken', accessToken);
+      
+      final JwtClaim decClaimSet = verifyJwtHS256Signature(
+          accessToken, r'qajv^vwA9a2R@F0[$3~3;/O2d"W::H');
+      print("Set: $decClaimSet");
+      _prefs.setInt('userId', decClaimSet.payload["id"]);
+      _prefs.setString('govId', decClaimSet.payload['govId']);
+      _prefs.setString('name', decClaimSet.payload['name']);
+      print("Muhahahahahaha!!!");
+    });
+
     signOutUser = RxCommand.createAsyncNoParam<bool>(() {
-      var rnd = new Random();
-      print("Clearing out my local data");
       Future.delayed(Duration(seconds: 5));
-      return Future.value(rnd.nextBool());
+      return Future.value(true);
     });
 
     // Return authentication status which can be used as the last result
@@ -64,17 +82,13 @@ class AuthManagerInstance
     signOutUser.results
         .where((authResult) => authResult.data != null)
         .listen((authResult) {
-      if (authResult.data == true) {
-        print("Successfully logged out");
-        authStatus(AuthStatus.LOGGED_OUT);
-      } else {
-        print("An sign out error occured");
-      }
+      print("Successfully logged out");
+      authStatus(AuthStatus.LOGGED_OUT);
     });
 
-    fetchSavedCredentials = RxCommand.createAsyncNoParam<bool>(() {
+    fetchSavedCredentials = RxCommand.createAsyncNoParam<bool>(() async {
       print("Fetching credentials");
-      Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 3));
       print("Finished fetching");
       return Future.value(false);
     });
