@@ -5,6 +5,7 @@ import 'package:afyamkononi/src/screens/decision.dart';
 import 'package:afyamkononi/src/state/managers/auth_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
 
+import 'package:afyamkononi/src/screens/tabs/data.dart';
 import 'package:afyamkononi/src/screens/tabs/permissions.dart';
 import 'package:afyamkononi/src/screens/tabs/profile.dart';
 import 'package:afyamkononi/src/screens/tabs/transactions.dart';
@@ -35,6 +36,7 @@ class _HomeParentState extends State<HomeParent> {
   final List<Widget> _children = [
     PatientProfile(),
     PatientPermissions(),
+    PatientData(),
     PatientTransactions()
   ];
 
@@ -105,6 +107,8 @@ class _HomeParentState extends State<HomeParent> {
           // Confidential Records Permissions
           BottomNavigationBarItem(
               icon: Icon(Icons.edit), title: Text('Permissions')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.book), title: Text('My Data')),
           // Transactions List
           BottomNavigationBarItem(
               icon: Icon(Icons.list), title: Text('My Transactions'))
