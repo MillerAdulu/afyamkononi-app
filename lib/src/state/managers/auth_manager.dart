@@ -1,4 +1,3 @@
-import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:rx_command/rx_command.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +7,7 @@ import 'package:afyamkononi/src/state/services/api_service.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
 import 'package:afyamkononi/src/utils/validators/email_validator.dart';
 import 'package:afyamkononi/src/utils/validators/password_validator.dart';
+import 'package:afyamkononi/src/utils/jwt_to_object.dart';
 
 abstract class AuthManager {
   RxCommand<AuthStatus, AuthStatus> authStatus;
@@ -23,7 +23,7 @@ abstract class AuthManager {
 }
 
 class AuthManagerInstance
-    with EmailValidator, PasswordValidator
+    with EmailValidator, PasswordValidator, JWTToObject
     implements AuthManager {
   @override
   RxCommand<AuthStatus, AuthStatus> authStatus;
@@ -62,18 +62,16 @@ class AuthManagerInstance
       final accessToken = signInResult.accessToken;
       SharedPreferences _prefs = await SharedPreferences.getInstance();
       await _prefs.setString('accessToken', accessToken);
-      
-      final JwtClaim decClaimSet = verifyJwtHS256Signature(
-          accessToken, r'qajv^vwA9a2R@F0[$3~3;/O2d"W::H');
-      print("Set: $decClaimSet");
-      _prefs.setInt('userId', decClaimSet.payload["id"]);
-      _prefs.setString('govId', decClaimSet.payload['govId']);
-      _prefs.setString('name', decClaimSet.payload['name']);
-      print("Muhahahahahaha!!!");
+
+      final decClaimSet = parseJwt(accessToken);
+
+      _prefs.setInt('userId', decClaimSet["id"]);
+      _prefs.setString('govId', decClaimSet['govId']);
+      _prefs.setString('name', decClaimSet['name']);
     });
 
-    signOutUser = RxCommand.createAsyncNoParam<bool>(() {
-      Future.delayed(Duration(seconds: 5));
+    signOutUser = RxCommand.createAsyncNoParam<bool>(() async {
+      await Future.delayed(Duration(seconds: 5));
       return Future.value(true);
     });
 
