@@ -1,6 +1,7 @@
 import 'package:afyamkononi/src/models/auth.dart';
 import 'package:afyamkononi/src/models/consent.dart';
 import 'package:afyamkononi/src/models/medical_data.dart';
+import 'package:afyamkononi/src/models/profile.dart';
 import 'package:afyamkononi/src/models/transactions.dart';
 import 'package:afyamkononi/src/utils/http/network.dart';
 import 'package:afyamkononi/src/utils/serializer/serializers.dart';
@@ -10,6 +11,7 @@ abstract class APIService {
   Future<ConsentResult> fetchConsentRequests(String govId);
   Future<MedicalData> fetchPatientMedicalData(String govId);
   Future<TransactionData> fetchPatientTransactions(String govId);
+  Future<UserProfile> fetchPatientProfile(String govId);
 }
 
 class APIServiceInstance implements APIService {
@@ -62,10 +64,23 @@ class APIServiceInstance implements APIService {
   Future<TransactionData> fetchPatientTransactions(String govId) async {
     final String patientTransactionsUrl = '$_baseUrl/transactions/$govId';
     dynamic response = await _networkUtil.getReq(patientTransactionsUrl);
+    print(serializers.deserializeWith(TransactionData.serializer, response));
 
     if (response == null) return null;
     if (response['error'] == null)
       return serializers.deserializeWith(TransactionData.serializer, response);
+    else
+      throw Exception(response['error']);
+  }
+
+  @override
+  Future<UserProfile> fetchPatientProfile(String govId) async {
+    final String profileUrl = '$_baseUrl/accounts/gov_id/$govId';
+    final response = await _networkUtil.getReq(profileUrl);
+
+    if (response == null) return null;
+    if (response['error'] == null)
+      return serializers.deserializeWith(UserProfile.serializer, response);
     else
       throw Exception(response['error']);
   }

@@ -8,6 +8,7 @@ import 'package:afyamkononi/src/models/auth.dart';
 import 'package:afyamkononi/src/models/consent.dart';
 import 'package:afyamkononi/src/models/medical_data.dart';
 import 'package:afyamkononi/src/models/transactions.dart';
+import 'package:afyamkononi/src/models/profile.dart';
 
 part 'serializers.g.dart';
 
@@ -22,6 +23,8 @@ part 'serializers.g.dart';
   Transactions,
   Data,
   Signatures,
+  UserProfile,
+  ProfileData,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
