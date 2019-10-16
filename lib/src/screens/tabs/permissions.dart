@@ -74,16 +74,19 @@ class _PatientPermissionsState extends State<PatientPermissions> {
       case "pending":
         widget = CircleAvatar(
           backgroundColor: Colors.pinkAccent,
+          child: Icon(Icons.timer),
         );
         break;
       case "revoked":
         widget = CircleAvatar(
           backgroundColor: Colors.red,
+          child: Icon(Icons.cancel),
         );
         break;
       case "granted":
         widget = CircleAvatar(
           backgroundColor: Colors.green,
+          child: Icon(Icons.check),
         );
         break;
       default:
