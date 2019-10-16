@@ -43,6 +43,8 @@ abstract class Transactions
     implements Built<Transactions, TransactionsBuilder> {
   String get action;
 
+  Data get data;
+
   @BuiltValueField(wireName: 'creator_account_id')
   String get creatorAccountId;
 
@@ -57,6 +59,41 @@ abstract class Transactions
   factory Transactions([updates(TransactionsBuilder transactionsBuilder)]) =
       _$Transactions;
   static Serializer<Transactions> get serializer => _$transactionsSerializer;
+}
+
+abstract class Data implements Built<Data, DataBuilder> {
+  @nullable
+  @BuiltValueField(wireName: 'account_id')
+  String get accountId;
+
+  @nullable
+  @BuiltValueField(wireName: 'account_name')
+  String get accountName;
+
+  @nullable
+  String get key;
+
+  @nullable
+  String get value;
+
+  @nullable
+  @BuiltValueField(wireName: 'domain_id')
+  String get domainId;
+
+  @nullable
+  @BuiltValueField(wireName: 'public_key')
+  String get publicKey;
+
+  @nullable
+  @BuiltValueField(wireName: 'role_name')
+  String get roleName;
+
+  @nullable
+  int get permission;
+
+  Data._();
+  factory Data([updates(DataBuilder dataBuilder)]) = _$Data;
+  static Serializer<Data> get serializer => _$dataSerializer;
 }
 
 abstract class Signatures implements Built<Signatures, SignaturesBuilder> {

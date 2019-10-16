@@ -20,6 +20,7 @@ part 'serializers.g.dart';
   TransactionData,
   TransactionsPageResponse,
   Transactions,
+  Data,
   Signatures,
 ])
 final Serializers serializers =
