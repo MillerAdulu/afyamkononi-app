@@ -7,6 +7,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:afyamkononi/src/models/auth.dart';
 import 'package:afyamkononi/src/models/consent.dart';
 import 'package:afyamkononi/src/models/medical_data.dart';
+import 'package:afyamkononi/src/models/transactions.dart';
 
 part 'serializers.g.dart';
 
@@ -15,7 +16,11 @@ part 'serializers.g.dart';
   ConsentResult,
   ConsentResults,
   MedicalData,
-  MedicalRecords
+  MedicalRecords,
+  TransactionData,
+  TransactionsPageResponse,
+  Transactions,
+  Signatures,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
