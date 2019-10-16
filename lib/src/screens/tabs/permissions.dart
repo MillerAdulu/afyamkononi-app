@@ -13,7 +13,7 @@ class PatientPermissions extends StatefulWidget {
 class _PatientPermissionsState extends State<PatientPermissions> {
   @override
   void initState() {
-    sl<DataManager>().consentInfo('33989061');
+    sl<DataManager>().consentInfo();
     super.initState();
   }
 
