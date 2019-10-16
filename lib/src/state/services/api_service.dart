@@ -10,7 +10,7 @@ abstract class APIService {
   Future<dynamic> signInUser(Map credentials);
   Future<ConsentResult> fetchConsentRequests(String govId);
   Future<MedicalData> fetchPatientMedicalData(String govId);
-  Future<TransactionData> fetchPatientTransactions(String govId);
+  Future<TransactionParent> fetchPatientTransactions(String govId);
   Future<UserProfile> fetchPatientProfile(String govId);
 }
 
@@ -61,14 +61,14 @@ class APIServiceInstance implements APIService {
   }
 
   @override
-  Future<TransactionData> fetchPatientTransactions(String govId) async {
+  Future<TransactionParent> fetchPatientTransactions(String govId) async {
     final String patientTransactionsUrl = '$_baseUrl/transactions/$govId';
     dynamic response = await _networkUtil.getReq(patientTransactionsUrl);
-    print(serializers.deserializeWith(TransactionData.serializer, response));
 
     if (response == null) return null;
     if (response['error'] == null)
-      return serializers.deserializeWith(TransactionData.serializer, response);
+      return serializers.deserializeWith(
+          TransactionParent.serializer, response);
     else
       throw Exception(response['error']);
   }

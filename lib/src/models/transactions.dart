@@ -6,6 +6,18 @@ import 'package:built_value/serializer.dart';
 
 part 'transactions.g.dart';
 
+abstract class TransactionParent
+    implements Built<TransactionParent, TransactionParentBuilder> {
+  TransactionData get data;
+
+  TransactionParent._();
+  factory TransactionParent(
+          [updates(TransactionParentBuilder transactionParentBuilder)]) =
+      _$TransactionParent;
+  static Serializer<TransactionParent> get serializer =>
+      _$transactionParentSerializer;
+}
+
 abstract class TransactionData
     implements Built<TransactionData, TransactionDataBuilder> {
   @BuiltValueField(wireName: 'query_hash')
@@ -26,7 +38,7 @@ abstract class TransactionsPageResponse
     implements
         Built<TransactionsPageResponse, TransactionsPageResponseBuilder> {
   @BuiltValueField(wireName: 'all_transactions_size')
-  String get allTransactionsSize;
+  int get allTransactionsSize;
 
   BuiltList<Transactions> get transactions;
 

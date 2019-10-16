@@ -11,7 +11,7 @@ import 'package:afyamkononi/src/utils/service_locator.dart';
 abstract class DataManager {
   RxCommand<void, ConsentResult> consentInfo;
   RxCommand<void, MedicalData> patientMedicalData;
-  RxCommand<void, TransactionData> patientTransactions;
+  RxCommand<void, TransactionParent> patientTransactions;
   RxCommand<void, UserProfile> patientProfile;
 }
 
@@ -23,7 +23,7 @@ class DataManagerInstance implements DataManager {
   RxCommand<void, MedicalData> patientMedicalData;
 
   @override
-  RxCommand<void, TransactionData> patientTransactions;
+  RxCommand<void, TransactionParent> patientTransactions;
 
   @override
   RxCommand<void, UserProfile> patientProfile;
@@ -40,7 +40,7 @@ class DataManagerInstance implements DataManager {
     });
 
     patientTransactions =
-        RxCommand.createAsyncNoParam<TransactionData>(() async {
+        RxCommand.createAsyncNoParam<TransactionParent>(() async {
       final govId = await sl<SharedPreferencesService>().getGovId();
       return await sl<APIService>().fetchPatientTransactions(govId);
     });

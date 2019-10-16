@@ -18,6 +18,7 @@ part 'serializers.g.dart';
   ConsentResults,
   MedicalData,
   MedicalRecords,
+  TransactionParent,
   TransactionData,
   TransactionsPageResponse,
   Transactions,
