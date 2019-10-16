@@ -1,19 +1,21 @@
 import 'package:afyamkononi/src/models/auth.dart';
+import 'package:afyamkononi/src/models/consent.dart';
 import 'package:afyamkononi/src/utils/http/network.dart';
 import 'package:afyamkononi/src/utils/serializer/serializers.dart';
 
 abstract class APIService {
   Future<dynamic> signInUser(Map credentials);
+  Future<ConsentResult> fetchConsentRequests(String govId);
 }
 
 class APIServiceInstance implements APIService {
   NetworkUtil _networkUtil = new NetworkUtil();
 
-  String baseUrl = 'https://afyamkononi.herokuapp.com/api';
+  String _baseUrl = 'https://afyamkononi.herokuapp.com/api';
 
   @override
   Future<SignInResult> signInUser(Map credentials) async {
-    final String signInUrl = '$baseUrl/auth/sign_in';
+    final String signInUrl = '$_baseUrl/auth/sign_in';
 
     dynamic response = await _networkUtil.postReq(signInUrl, body: {
       'email': credentials['email'],
@@ -25,5 +27,18 @@ class APIServiceInstance implements APIService {
       return serializers.deserializeWith(SignInResult.serializer, response);
     else
       throw Exception(response["error"]);
+  }
+
+  @override
+  Future<ConsentResult> fetchConsentRequests(String govId) async {
+    final String consentUrl = '$_baseUrl/consent/$govId';
+
+    dynamic response = await _networkUtil.getReq(consentUrl);
+
+    if (response == null) return null;
+    if (response['error'] == null)
+      return serializers.deserializeWith(ConsentResult.serializer, response);
+    else
+      throw Exception(response['error']);
   }
 }
