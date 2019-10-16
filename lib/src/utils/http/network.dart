@@ -3,6 +3,9 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import 'package:afyamkononi/src/state/services/shared_preferences_service.dart';
+import 'package:afyamkononi/src/utils/service_locator.dart';
+
 class NetworkUtil {
   static NetworkUtil _networkUtil = new NetworkUtil.internal();
   NetworkUtil.internal();
@@ -92,7 +95,6 @@ class NetworkUtil {
   }
 
   Future<String> getBearerToken() async {
-    // Fetch the user's auth token from wherever it's located and return it here
-    return '';
+    return await sl<SharedPreferencesService>().getAccessToken();
   }
 }
