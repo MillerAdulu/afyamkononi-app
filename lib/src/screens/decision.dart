@@ -26,9 +26,12 @@ class _DecisionPageState extends State<DecisionPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           final result = snapshot.data;
 
-          if (result?.data == true) _redirectToPage(context, Home());
+          if (result != null) {
+            if (result?.data == true) _redirectToPage(context, Home());
 
-          if (result?.data == null) _redirectToPage(context, SignIn());
+            if (result?.data == null || result?.data == false)
+              _redirectToPage(context, SignIn());
+          }
 
           return Scaffold(
             body: Center(

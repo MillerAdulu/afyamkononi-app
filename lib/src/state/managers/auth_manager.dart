@@ -1,3 +1,4 @@
+import 'package:afyamkononi/src/state/services/shared_preferences_service.dart';
 import 'package:rx_command/rx_command.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -83,7 +84,11 @@ class AuthManagerInstance
     });
 
     fetchSavedCredentials = RxCommand.createAsyncNoParam<bool>(() async {
-      await Future.delayed(Duration(seconds: 3));
+      final token = await sl<SharedPreferencesService>().getAccessToken();
+      final govId = await sl<SharedPreferencesService>().getGovId();
+
+      if (token != null && govId != null && token != '' && govId != '')
+        return Future.value(true);
       return Future.value(false);
     });
   }
