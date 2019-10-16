@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rx_command/rx_command.dart';
 
-import 'package:afyamkononi/src/screens/home.dart';
+import 'package:afyamkononi/src/screens/home/home.dart';
 import 'package:afyamkononi/src/screens/sign_in.dart';
 import 'package:afyamkononi/src/state/managers/auth_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
