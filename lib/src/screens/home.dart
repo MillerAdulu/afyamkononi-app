@@ -101,17 +101,48 @@ class _HomeParentState extends State<HomeParent> {
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
-          // Patient Profile Tab
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), title: Text('My Profile')),
-          // Confidential Records Permissions
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.green,
+            ),
+            title: Text(
+              'My Profile',
+              style: TextStyle(
+                color: Colors.green,
+              ),
+            ),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.edit), title: Text('Permissions')),
+              icon: Icon(
+                Icons.edit,
+                color: Colors.green,
+              ),
+              title: Text(
+                'Permissions',
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              )),
           BottomNavigationBarItem(
-              icon: Icon(Icons.book), title: Text('My Data')),
-          // Transactions List
+              icon: Icon(Icons.book, color: Colors.green),
+              title: Text(
+                'My Data',
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              )),
           BottomNavigationBarItem(
-              icon: Icon(Icons.list), title: Text('My Transactions'))
+              icon: Icon(
+                Icons.list,
+                color: Colors.green,
+              ),
+              title: Text(
+                'My Transactions',
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              ))
         ],
       ),
     );
