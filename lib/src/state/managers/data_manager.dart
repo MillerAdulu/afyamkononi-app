@@ -10,7 +10,7 @@ import 'package:afyamkononi/src/models/consent.dart';
 abstract class DataManager {
   RxCommand<void, ConsentResult> consentInfo;
   RxCommand<void, MedicalData> patientMedicalData;
-  RxCommand<void, TransactionData> patientTransactionData;
+  RxCommand<void, TransactionData> patientTransactions;
 }
 
 class DataManagerInstance implements DataManager {
@@ -21,7 +21,7 @@ class DataManagerInstance implements DataManager {
   RxCommand<void, MedicalData> patientMedicalData;
 
   @override
-  RxCommand<void, TransactionData> patientTransactionData;
+  RxCommand<void, TransactionData> patientTransactions;
 
   DataManagerInstance() {
     consentInfo = RxCommand.createAsyncNoParam<ConsentResult>(() async {
@@ -34,7 +34,7 @@ class DataManagerInstance implements DataManager {
       return await sl<APIService>().fetchPatientMedicalData(govId);
     });
 
-    patientTransactionData =
+    patientTransactions =
         RxCommand.createAsyncNoParam<TransactionData>(() async {
       final govId = await sl<SharedPreferencesService>().getGovId();
       return await sl<APIService>().fetchPatientTransactions(govId);
