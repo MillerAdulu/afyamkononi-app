@@ -1,12 +1,12 @@
+import 'package:rx_command/rx_command.dart';
+
+import 'package:afyamkononi/src/models/consent.dart';
 import 'package:afyamkononi/src/models/medical_data.dart';
 import 'package:afyamkononi/src/models/profile.dart';
 import 'package:afyamkononi/src/models/transactions.dart';
 import 'package:afyamkononi/src/state/services/api_service.dart';
 import 'package:afyamkononi/src/state/services/shared_preferences_service.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
-import 'package:rx_command/rx_command.dart';
-
-import 'package:afyamkononi/src/models/consent.dart';
 
 abstract class DataManager {
   RxCommand<void, ConsentResult> consentInfo;

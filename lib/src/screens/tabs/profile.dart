@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:rx_command/rx_command.dart';
+
 import 'package:afyamkononi/src/models/profile.dart';
 import 'package:afyamkononi/src/state/managers/data_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
-import 'package:flutter/material.dart';
-import 'package:rx_command/rx_command.dart';
 
 class PatientProfile extends StatefulWidget {
   @override
