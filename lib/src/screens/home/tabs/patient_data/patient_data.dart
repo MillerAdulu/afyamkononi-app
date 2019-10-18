@@ -1,3 +1,4 @@
+import 'package:afyamkononi/src/screens/home/tabs/patient_data/medical_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:rx_command/rx_command.dart';
 
@@ -69,6 +70,16 @@ class _PatientDataState extends State<PatientData> {
       ),
       title: Text("On ${formatDate(entry.timestamp)},"),
       subtitle: Text("${entry.seenBy} saw you."),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MedicalEntry(
+              medicalentry: entry,
+            ),
+          ),
+        );
+      },
     );
   }
 }

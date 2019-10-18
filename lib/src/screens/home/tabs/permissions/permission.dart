@@ -118,8 +118,8 @@ class _PermissionViewState extends State<PermissionView> {
 
   Widget _tile(String _title, String _detail) {
     return ListTile(
-      title: Text(_title),
-      subtitle: Text(_detail),
+      title: Text(_detail),
+      subtitle: Text(_title),
       trailing: Icon(Icons.check),
     );
   }
