@@ -7,15 +7,25 @@ import 'package:afyamkononi/src/utils/service_locator.dart';
 import 'package:afyamkononi/src/models/consent.dart';
 
 class Permission extends StatefulWidget {
+  final ConsentResults consent;
+
+  const Permission({Key key, this.consent}) : super(key: key);
+
   @override
-  _PermissionState createState() => _PermissionState();
+  _PermissionState createState() => _PermissionState(consent);
 }
 
 class _PermissionState extends State<Permission> {
+  final ConsentResults consent;
+
+  _PermissionState(this.consent);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PermissionView(),
+      body: PermissionView(
+        consent: consent,
+      ),
     );
   }
 }
@@ -96,7 +106,6 @@ class _PermissionViewState extends State<PermissionView> {
   Widget _actionButton(consent) {
     Widget widget;
     switch (consent.status) {
-      case "pending":
       case "granted":
         widget = StreamBuilder<CommandResult<String>>(
           stream: sl<DataManager>().revokePermission.results,

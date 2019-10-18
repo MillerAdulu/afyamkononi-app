@@ -12,8 +12,8 @@ abstract class APIService {
   Future<MedicalData> fetchPatientMedicalData(String govId);
   Future<TransactionParent> fetchPatientTransactions(String govId);
   Future<UserProfile> fetchPatientProfile(String govId);
-  Future<String> revokePermission(String govId);
-  Future<String> grantPermission(String govId);
+  Future<String> revokePermission(String patientId, String govId);
+  Future<String> grantPermission(String patientId, String govId);
 }
 
 class APIServiceInstance implements APIService {
@@ -88,13 +88,13 @@ class APIServiceInstance implements APIService {
   }
 
   @override
-  Future<String> revokePermission(String govId) async {
-    final governmentId =
-        govId.replaceAllMapped(new RegExp(r'@afyamkononi'), (match) => '');
+  Future<String> revokePermission(String patientId, String govId) async {
+    final String revokeUrl =
+        '$_baseUrl/accounts/gov_id/${_stripExtras(patientId)}';
 
-    final String revokeUrl = '$_baseUrl/accounts/$governmentId';
-
-    final response = await _networkUtil.putReq(revokeUrl);
+    final response = await _networkUtil.putReq(revokeUrl, body: {
+      'gov_id': _stripExtras(govId),
+    });
 
     if (response == null) return null;
     if (response['error'] == null)
@@ -104,18 +104,22 @@ class APIServiceInstance implements APIService {
   }
 
   @override
-  Future<String> grantPermission(String govId) async {
-    final governmentId =
-        govId.replaceAllMapped(new RegExp(r'@afyamkononi'), (match) => '');
+  Future<String> grantPermission(String patientId, String govId) async {
+    final String grantUrl =
+        '$_baseUrl/accounts/gov_id/${_stripExtras(patientId)}';
 
-    final String grantUrl = '$_baseUrl/accounts/$governmentId';
-
-    final response = await _networkUtil.patchReq(grantUrl);
+    final response = await _networkUtil.patchReq(grantUrl, body: {
+      'gov_id': _stripExtras(govId),
+    });
 
     if (response == null) return null;
     if (response['error'] == null)
       return response['success'];
     else
       throw Exception(response['error']);
+  }
+
+  String _stripExtras(String id) {
+    return id.replaceAllMapped(new RegExp(r'@afyamkononi'), (match) => '');
   }
 }

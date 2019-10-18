@@ -63,8 +63,9 @@ class DataManagerInstance implements DataManager {
     });
 
     revokePermission =
-        RxCommand.createAsyncNoResult<ConsentResults>((consent) async {
-      return await sl<APIService>().revokePermission(consent.requestorId);
+        RxCommand.createAsync<ConsentResults, String>((consent) async {
+      return await sl<APIService>()
+          .revokePermission(consent.grantorId, consent.requestorId);
     });
 
     revokePermission.results
@@ -72,8 +73,9 @@ class DataManagerInstance implements DataManager {
         .listen((revokeRes) => messageUser(revokeRes.data));
 
     grantPermission =
-        RxCommand.createAsyncNoResult<ConsentResults>((consent) async {
-      return await sl<APIService>().grantPermission(consent.requestorId);
+        RxCommand.createAsync<ConsentResults, String>((consent) async {
+      return await sl<APIService>()
+          .grantPermission(consent.grantorId, consent.requestorId);
     });
 
     grantPermission.results

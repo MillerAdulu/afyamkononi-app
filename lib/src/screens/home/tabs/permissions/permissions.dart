@@ -1,3 +1,4 @@
+import 'package:afyamkononi/src/screens/home/tabs/permissions/permission.dart';
 import 'package:flutter/material.dart';
 import 'package:rx_command/rx_command.dart';
 
@@ -65,6 +66,17 @@ class _PatientPermissionsState extends State<PatientPermissions> {
       leading: _returnAvatar(entry.status),
       title: Text(entry.requestorName),
       subtitle: Text('wants ${entry.permission} abilities.'),
+      trailing: Icon(Icons.fingerprint),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Permission(
+              consent: entry,
+            ),
+          ),
+        );
+      },
     );
   }
 
