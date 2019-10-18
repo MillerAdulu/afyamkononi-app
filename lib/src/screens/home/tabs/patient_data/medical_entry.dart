@@ -40,7 +40,6 @@ class _MedicalEntryViewState extends State<MedicalEntryView> {
 
   _MedicalEntryViewState(this.medicalentry);
 
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -78,6 +77,4 @@ class _MedicalEntryViewState extends State<MedicalEntryView> {
       trailing: Icon(Icons.check),
     );
   }
-
-  
 }
