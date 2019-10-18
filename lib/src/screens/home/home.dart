@@ -6,7 +6,7 @@ import 'package:afyamkononi/src/state/managers/auth_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
 
 import 'package:afyamkononi/src/screens/home/tabs/data.dart';
-import 'package:afyamkononi/src/screens/home/tabs/permissions.dart';
+import 'package:afyamkononi/src/screens/home/tabs//permissions/permissions.dart';
 import 'package:afyamkononi/src/screens/home/tabs/profile.dart';
 import 'package:afyamkononi/src/screens/home/tabs/transactions.dart';
 
