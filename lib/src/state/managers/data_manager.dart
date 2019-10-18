@@ -13,6 +13,9 @@ abstract class DataManager {
   RxCommand<void, MedicalData> patientMedicalData;
   RxCommand<void, TransactionParent> patientTransactions;
   RxCommand<void, UserProfile> patientProfile;
+  RxCommand<ConsentResults, String> revokePermission;
+  RxCommand<ConsentResults, String> grantPermission;
+  RxCommand<String, String> messageUser;
 }
 
 class DataManagerInstance implements DataManager {
@@ -27,6 +30,15 @@ class DataManagerInstance implements DataManager {
 
   @override
   RxCommand<void, UserProfile> patientProfile;
+
+  @override
+  RxCommand<ConsentResults, String> revokePermission;
+
+  @override
+  RxCommand<ConsentResults, String> grantPermission;
+
+  @override
+  RxCommand<String, String> messageUser;
 
   DataManagerInstance() {
     consentInfo = RxCommand.createAsyncNoParam<ConsentResult>(() async {
@@ -49,5 +61,25 @@ class DataManagerInstance implements DataManager {
       final govId = await sl<SharedPreferencesService>().getGovId();
       return await sl<APIService>().fetchPatientProfile(govId);
     });
+
+    revokePermission =
+        RxCommand.createAsyncNoResult<ConsentResults>((consent) async {
+      return await sl<APIService>().revokePermission(consent.requestorId);
+    });
+
+    revokePermission.results
+        .where((revokeRes) => revokeRes.data != null)
+        .listen((revokeRes) => messageUser(revokeRes.data));
+
+    grantPermission =
+        RxCommand.createAsyncNoResult<ConsentResults>((consent) async {
+      return await sl<APIService>().grantPermission(consent.requestorId);
+    });
+
+    grantPermission.results
+        .where((grantRes) => grantRes.data != null)
+        .listen((grantRes) => messageUser(grantRes.data));
+
+    messageUser = RxCommand.createSync<String, String>((message) => message);
   }
 }

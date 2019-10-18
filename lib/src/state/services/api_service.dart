@@ -12,6 +12,8 @@ abstract class APIService {
   Future<MedicalData> fetchPatientMedicalData(String govId);
   Future<TransactionParent> fetchPatientTransactions(String govId);
   Future<UserProfile> fetchPatientProfile(String govId);
+  Future<String> revokePermission(String govId);
+  Future<String> grantPermission(String govId);
 }
 
 class APIServiceInstance implements APIService {
@@ -81,6 +83,38 @@ class APIServiceInstance implements APIService {
     if (response == null) return null;
     if (response['error'] == null)
       return serializers.deserializeWith(UserProfile.serializer, response);
+    else
+      throw Exception(response['error']);
+  }
+
+  @override
+  Future<String> revokePermission(String govId) async {
+    final governmentId =
+        govId.replaceAllMapped(new RegExp(r'@afyamkononi'), (match) => '');
+
+    final String revokeUrl = '$_baseUrl/accounts/$governmentId';
+
+    final response = await _networkUtil.putReq(revokeUrl);
+
+    if (response == null) return null;
+    if (response['error'] == null)
+      return response['success'];
+    else
+      throw Exception(response['error']);
+  }
+
+  @override
+  Future<String> grantPermission(String govId) async {
+    final governmentId =
+        govId.replaceAllMapped(new RegExp(r'@afyamkononi'), (match) => '');
+
+    final String grantUrl = '$_baseUrl/accounts/$governmentId';
+
+    final response = await _networkUtil.patchReq(grantUrl);
+
+    if (response == null) return null;
+    if (response['error'] == null)
+      return response['success'];
     else
       throw Exception(response['error']);
   }
