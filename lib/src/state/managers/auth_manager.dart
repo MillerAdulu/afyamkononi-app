@@ -8,7 +8,7 @@ import 'package:afyamkononi/src/state/services/api_service.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
 import 'package:afyamkononi/src/utils/validators/email_validator.dart';
 import 'package:afyamkononi/src/utils/validators/password_validator.dart';
-import 'package:afyamkononi/src/utils/jwt_to_object.dart';
+import 'package:afyamkononi/src/utils/misc.dart';
 
 abstract class AuthManager {
   RxCommand<AuthStatus, AuthStatus> authStatus;

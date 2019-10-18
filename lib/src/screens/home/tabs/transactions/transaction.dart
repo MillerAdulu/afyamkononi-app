@@ -1,8 +1,7 @@
-import 'package:afyamkononi/src/utils/misc.dart';
-import 'package:afyamkononi/src/utils/timestamp_to_date.dart';
 import 'package:flutter/material.dart';
 
 import 'package:afyamkononi/src/models/transactions.dart';
+import 'package:afyamkononi/src/utils/misc.dart';
 
 class Transaction extends StatefulWidget {
   final Transactions transaction;
