@@ -62,7 +62,7 @@ class _PatientPermissionsState extends State<PatientPermissions> {
 
   Widget _permissionsCard(entry, index) {
     return ListTile(
-      key: Key('${entry.requestor_id}-${entry.permission}-${entry.status}'),
+      key: Key('${entry.requestorId}-${entry.permission}-${entry.status}'),
       leading: _returnAvatar(entry.status),
       title: Text(entry.requestorName),
       subtitle: Text('wants ${entry.permission} abilities.'),

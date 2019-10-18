@@ -87,31 +87,29 @@ class _PermissionViewState extends State<PermissionView> {
     return Center(
       child: Container(
         height: double.maxFinite,
-        child: ListView(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 48),
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                'Permission Details',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-                textAlign: TextAlign.center,
+        child: ListView(shrinkWrap: true, children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 48),
+            alignment: AlignmentDirectional.center,
+            child: Text(
+              'Permission Details',
+              style: TextStyle(
+                fontSize: 24,
               ),
+              textAlign: TextAlign.center,
             ),
-            Divider(),
-            _tile('Requestor ID', consent.requestorId),
-            _tile('Requestor Name', consent.requestorName),
-            _tile('Grantor ID', consent.grantorId),
-            _tile('Grantor Name', consent.grantorName),
-            _tile('Permission', consent.permission),
-            _tile('Status', consent.status),
-            _tile('Created At', consent.createdAt),
-            _tile('Last Update', consent.updatedAt),
-            _actionButton(consent),
-          ],
-        ),
+          ),
+          Divider(),
+          _tile('Requestor ID', consent.requestorId),
+          _tile('Requestor Name', consent.requestorName),
+          _tile('Grantor ID', consent.grantorId),
+          _tile('Grantor Name', consent.grantorName),
+          _tile('Permission', consent.permission),
+          _tile('Status', consent.status),
+          _tile('Created At', consent.createdAt),
+          _tile('Last Update', consent.updatedAt),
+          Container(height: 40, child: _actionButton(consent)),
+        ]),
       ),
     );
   }
@@ -135,7 +133,7 @@ class _PermissionViewState extends State<PermissionView> {
             if (result != null) {
               if (result.isExecuting)
                 return SizedBox(
-                  height: 15,
+                  height: 10,
                   width: 10,
                   child: Center(
                     child: CircularProgressIndicator(),
@@ -161,7 +159,7 @@ class _PermissionViewState extends State<PermissionView> {
             if (result != null) {
               if (result.isExecuting)
                 return SizedBox(
-                  height: 15,
+                  height: 10,
                   width: 10,
                   child: Center(
                     child: CircularProgressIndicator(),
