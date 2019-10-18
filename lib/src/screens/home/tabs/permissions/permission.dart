@@ -84,22 +84,43 @@ class _PermissionViewState extends State<PermissionView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.maxFinite,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Text('Requestor ID: ${consent.requestorId}'),
-          Text('Requestor Name: ${consent.requestorName}'),
-          Text('Grantor ID: ${consent.grantorId}'),
-          Text('Grantor Name: ${consent.grantorName}'),
-          Text('Permission: ${consent.permission}'),
-          Text('Status: ${consent.status}'),
-          Text('Created At: ${consent.createdAt}'),
-          Text('Updated At: ${consent.updatedAt}'),
-          _actionButton(consent),
-        ],
+    return Center(
+      child: Container(
+        height: double.maxFinite,
+        child: ListView(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 48),
+              alignment: AlignmentDirectional.center,
+              child: Text(
+                'Permission Details',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Divider(),
+            _tile('Requestor ID', consent.requestorId),
+            _tile('Requestor Name', consent.requestorName),
+            _tile('Grantor ID', consent.grantorId),
+            _tile('Grantor Name', consent.grantorName),
+            _tile('Permission', consent.permission),
+            _tile('Status', consent.status),
+            _tile('Created At', consent.createdAt),
+            _tile('Last Update', consent.updatedAt),
+            _actionButton(consent),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _tile(String _title, String _detail) {
+    return ListTile(
+      title: Text(_title),
+      subtitle: Text(_detail),
+      trailing: Icon(Icons.check),
     );
   }
 
@@ -112,7 +133,14 @@ class _PermissionViewState extends State<PermissionView> {
           builder: (context, snapshot) {
             final result = snapshot.data;
             if (result != null) {
-              if (result.isExecuting) return CircularProgressIndicator();
+              if (result.isExecuting)
+                return SizedBox(
+                  height: 15,
+                  width: 10,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               if (result.data != null) return _actionButton(consent);
             }
             return FlatButton(
@@ -131,11 +159,20 @@ class _PermissionViewState extends State<PermissionView> {
           builder: (context, snapshot) {
             final result = snapshot.data;
             if (result != null) {
-              if (result.isExecuting) return CircularProgressIndicator();
+              if (result.isExecuting)
+                return SizedBox(
+                  height: 15,
+                  width: 10,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               if (result.data != null) return _actionButton(consent);
             }
             return FlatButton(
               child: Text('Grant'),
+              color: Colors.green,
+              textColor: Colors.white,
               onPressed: () {
                 sl<DataManager>().grantPermission(consent);
               },
