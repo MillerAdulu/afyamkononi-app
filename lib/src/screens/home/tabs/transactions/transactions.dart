@@ -4,7 +4,8 @@ import 'package:rx_command/rx_command.dart';
 import 'package:afyamkononi/src/models/transactions.dart';
 import 'package:afyamkononi/src/state/managers/data_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
-import 'package:afyamkononi/src/utils/timestamp_to_date.dart';
+import 'package:afyamkononi/src/utils/misc.dart';
+import 'package:afyamkononi/src/screens/home/tabs/transactions/transaction.dart';
 
 class PatientTransactions extends StatefulWidget {
   @override
@@ -70,9 +71,19 @@ class _PatientTransactionsState extends State<PatientTransactions> {
         backgroundColor: Colors.green,
         child: Icon(Icons.check),
       ),
-      title: Text("On ${formatDate(entry.createdTime)},"),
-      subtitle: Text("${entry.creatorAccountId} performed ${entry.action}"),
+      title: Text("Date: ${formatDate(entry.createdTime)},"),
+      subtitle: Text("Action: ${entry.action}"),
       trailing: Icon(Icons.touch_app),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Transaction(
+              transaction: entry,
+            ),
+          ),
+        );
+      },
     );
   }
 }

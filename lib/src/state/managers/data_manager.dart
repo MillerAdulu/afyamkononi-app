@@ -70,7 +70,10 @@ class DataManagerInstance implements DataManager {
 
     revokePermission.results
         .where((revokeRes) => revokeRes.data != null)
-        .listen((revokeRes) => messageUser(revokeRes.data));
+        .listen((revokeRes) {
+      messageUser(revokeRes.data);
+      consentInfo();
+    });
 
     grantPermission =
         RxCommand.createAsync<ConsentResults, String>((consent) async {
@@ -80,7 +83,10 @@ class DataManagerInstance implements DataManager {
 
     grantPermission.results
         .where((grantRes) => grantRes.data != null)
-        .listen((grantRes) => messageUser(grantRes.data));
+        .listen((grantRes) {
+      messageUser(grantRes.data);
+      consentInfo();
+    });
 
     messageUser = RxCommand.createSync<String, String>((message) => message);
   }

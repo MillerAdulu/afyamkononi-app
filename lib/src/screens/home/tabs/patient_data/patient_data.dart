@@ -5,7 +5,7 @@ import 'package:rx_command/rx_command.dart';
 import 'package:afyamkononi/src/models/medical_data.dart';
 import 'package:afyamkononi/src/state/managers/data_manager.dart';
 import 'package:afyamkononi/src/utils/service_locator.dart';
-import 'package:afyamkononi/src/utils/timestamp_to_date.dart';
+import 'package:afyamkononi/src/utils/misc.dart';
 
 class PatientData extends StatefulWidget {
   @override

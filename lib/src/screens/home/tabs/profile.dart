@@ -41,12 +41,35 @@ class _PatientProfileState extends State<PatientProfile> {
                 final result = snapshot.data;
                 if (result != null) {
                   if (result.isExecuting) return CircularProgressIndicator();
-                  return Text(result.data.toString());
+                  return _profileCard(result.data);
                 }
                 return CircularProgressIndicator();
               }),
         ],
       ),
+    );
+  }
+
+  Widget _profileCard(UserProfile profile) {
+    return Card(
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          _tile('Creator Account', profile.creator),
+          _tile('Name', profile.data.name),
+          _tile('Email', profile.data.email),
+          _tile('Phone Number', profile.data.phoneNumber),
+          _tile('ID Number', profile.data.govId),
+        ],
+      ),
+    );
+  }
+
+  Widget _tile(String _det, String _val) {
+    return ListTile(
+      leading: Icon(Icons.info),
+      title: Text(_val),
+      subtitle: Text(_det),
     );
   }
 }
