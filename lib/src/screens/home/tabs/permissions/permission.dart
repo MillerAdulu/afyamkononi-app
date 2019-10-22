@@ -142,6 +142,8 @@ class _PermissionViewState extends State<PermissionView> {
               if (result.data != null) return _actionButton(consent);
             }
             return FlatButton(
+              color: Colors.red,
+              textColor: Colors.white,
               child: Text('Revoke'),
               onPressed: () {
                 sl<DataManager>().revokePermission(consent);
