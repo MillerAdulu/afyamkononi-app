@@ -6,3 +6,6 @@ run:
 
 fmt:
 		flutter format lib
+
+apk:
+		flutter build apk --target-platform android-arm,android-arm64 --split-per-abi

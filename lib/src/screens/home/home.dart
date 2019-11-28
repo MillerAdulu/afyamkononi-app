@@ -44,7 +44,7 @@ class _HomeParentState extends State<HomeParent> {
   void initState() {
     super.initState();
 
-    _userLogout = RxCommandListener(sl<AuthManager>().signOutUser,
+    _userLogout = RxCommandListener(sl<AuthManager>().authStatus,
         onValue: (_) => _onValueSignOut(),
         onError: (error) => _onErrorSignOut(error));
   }
@@ -96,6 +96,17 @@ class _HomeParentState extends State<HomeParent> {
 
   Widget _buildPage() {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              sl<AuthManager>().signOutUser();
+            },
+          )
+        ],
+      ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,

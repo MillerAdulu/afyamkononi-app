@@ -71,7 +71,7 @@ class AuthManagerInstance
     });
 
     signOutUser = RxCommand.createAsyncNoParam<bool>(() async {
-      await Future.delayed(Duration(seconds: 5));
+      await sl<SharedPreferencesService>().clearSharedPrefs();
       return Future.value(true);
     });
 
